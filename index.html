@@ -25,6 +25,7 @@
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             z-index: 50;
+			display: none;
         }
         h1 {
             margin-top: 0;
@@ -129,219 +130,17 @@
 
         // Move countdown in a circle
         let angle = 0;
-        function moveCountdown() {
-            const radius = 100;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2 * 0.7;
-            const countdown = document.getElementById('countdown');
-            angle += 0.01;
-            countdown.style.left = `${centerX + radius * Math.cos(angle)}px`;
-            countdown.style.top = `${centerY + radius * Math.sin(angle)}px`;
-            requestAnimationFrame(moveCountdown);
-        }
-        moveCountdown();
-
-        // Forest and snow logic
-        const forest = document.getElementById('forest');
-        const snowContainer = document.getElementById('snow');
-
-        function createForest() {
-            forest.innerHTML = '';
-            for (let i = 0; i < 20; i++) {
-                const tree = document.createElement('div');
-                tree.className = 'tree';
-                tree.style.left = `${Math.random() * 100}%`;
-                tree.style.height = `${30 + Math.random() * 40}vh`;
-                tree.style.width = `${10 + Math.random() * 15}vh`;
-                tree.style.opacity = `${0.7 + Math.random() * 0.3}`;
-                const green1 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
-                const green2 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
-                tree.style.background = `linear-gradient(to top, ${green1}, ${green2})`;
-                tree.style.zIndex = Math.floor(Math.random() * 10) + 2;
-                forest.appendChild(tree);
-            }
-        }
-
-        // Recreate forest every 10 minutes
-        createForest();
-        setInterval(createForest, 10*60*1000);
-
-        // Snowflakes
-        function createSnowflake() {
-            for (let i = 0; i < 50*Math.random(); i++) {
-                const now = new Date();
-                const christmas = new Date('December 25, 2025 00:00:00');
-                const diff = christmas - now;
-                const daysUntilChristmas = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const nov1 = new Date(now.getFullYear(), 10, 1);
-                const daysSinceNov1 = Math.floor((now - nov1) / (1000 * 60 * 60 * 24));
-                const probability = Math.min(1, Math.max(0, daysSinceNov1 / 54));
-                if (Math.random() > probability) return;
-                const snowflake = document.createElement('div');
-                snowflake.className = 'snowflake';
-                snowflake.innerHTML = '❄';
-                const releaseX = Math.random() * 100;
-                snowflake.style.left = `${releaseX}%`;
-                snowflake.style.top = `${-20}px`;
-                const size = 8 + Math.random() * 30;
-                snowflake.style.fontSize = `${size}px`;
-                snowflake.style.opacity = `${0.5 + Math.random() * 0.5}`;
-                const sway = (Math.random() - 0.5) * 200;
-                snowflake.style.setProperty('--sway', `${sway}px`);
-                const duration = 5 + Math.random() * 15;
-                snowflake.style.animation = `fall ${duration}s linear forwards`;
-                snowflake.style.zIndex = Math.floor(Math.random() * 10) + 1;
-                snowContainer.appendChild(snowflake);
-                setTimeout(() => {
-                    snowflake.remove();
-                }, duration * 1000);
-            }
-        }
-        setInterval(createSnowflake, 100);
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christmas Countdown</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #0a0a2a, #1a1a4a);
-            font-family: 'Arial', sans-serif;
-            color: white;
-            text-align: center;
-            height: 100vh;
-        }
-        .countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 30px 50px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            z-index: 50;
-        }
-        h1 {
-            margin-top: 0;
-            font-size: 2.5em;
-        }
-        .timer {
-            font-size: 2em;
-            margin: 20px 0;
-        }
-        .timer div {
-            display: inline-block;
-            margin: 0 10px;
-        }
-        .timer span {
-            display: block;
-            font-size: 0.7em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        .forest {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #0a0a2a, #1a1a4a);
-            overflow: hidden;
-        }
-        .tree {
-            position: absolute;
-            bottom: 0;
-            width: 100px;
-            height: 250px;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-        .snow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        .snowflake {
-            position: absolute;
-            color: white;
-            user-select: none;
-            will-change: transform, opacity;
-        }
-        @keyframes fall {
-            0% {
-                transform: translateY(0) translateX(0) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(50vh) translateX(calc(var(--sway, 0) * 0.5)) rotate(180deg);
-            }
-            100% {
-                transform: translateY(100vh) translateX(var(--sway, 0)) rotate(360deg);
-                opacity: 0;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="countdown" id="countdown" aria-live="polite">
-        <h1>Countdown to Christmas</h1>
-        <div class="timer">
-            <div>
-                <span id="days">00</span>
-                <span>Days</span>
-            </div>
-            <div>
-                <span id="hours">00</span>
-                <span>Hours</span>
-            </div>
-            <div>
-                <span id="minutes">00</span>
-                <span>Minutes</span>
-            </div>
-            <div>
-                <span id="seconds">00</span>
-                <span>Seconds</span>
-            </div>
-        </div>
-    </div>
-    <div class="forest" id="forest"></div>
-    <div class="snow" id="snow"></div>
-    <script>
-        // Countdown logic
-        function updateCountdown() {
-            const now = new Date();
-            const christmas = new Date('December 25, 2025 00:00:00');
-            const diff = christmas - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // Move countdown in a circle
-        let angle = 0;
-        function moveCountdown() {
-            const radius = 100;
-            const centerX = window.innerWidth / 2;
-            const centerY = window.innerHeight / 2 * 0.7;
-            const countdown = document.getElementById('countdown');
-            angle += 0.01;
-            countdown.style.left = `${centerX + radius * Math.cos(angle)}px`;
-            countdown.style.top = `${centerY + radius * Math.sin(angle)}px`;
-            requestAnimationFrame(moveCountdown);
-        }
+		function moveCountdown() {
+			const radius = 100;
+			const centerX = window.innerWidth / 2;
+			const centerY = window.innerHeight / 2 * 0.7;
+			const countdown = document.getElementById('countdown');
+			angle += 0.01;
+			countdown.style.left = `${centerX + radius * Math.cos(angle)}px`;
+			countdown.style.top = `${centerY + radius * Math.sin(angle)}px`;
+			countdown.style.display = "block"; // Show the element
+			requestAnimationFrame(moveCountdown);
+		}
         moveCountdown();
 
         // Forest and snow logic
