@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Countdown</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0a0a2a, #1a1a4a);
+            font-family: 'Arial', sans-serif;
+            color: white;
+            text-align: center;
+            height: 100vh;
+        }
+        #countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(2rem, 8vw, 4rem);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
+                         0 0 25px rgba(255, 0, 100, 0.3),
+                         0 0 35px rgba(255, 215, 0, 0.2);
+            font-weight: bold;
+            letter-spacing: 3px;
+            z-index: 10;
+            animation: pulse 2s infinite alternate;
+        }
+        @keyframes pulse {
+            from {
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
+                             0 0 25px rgba(255, 0, 100, 0.3),
+                             0 0 35px rgba(255, 215, 0, 0.2);
+            }
+            to {
+                text-shadow: 0 0 25px rgba(255, 255, 255, 0.9),
+                             0 0 35px rgba(255, 0, 100, 0.4),
+                             0 0 45px rgba(255, 215, 0, 0.3);
+            }
+        }
+        .forest {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0a0a2a, #1a1a4a);
+            overflow: hidden;
+        }
+        .tree {
+            position: absolute;
+            bottom: 0;
+            width: 100px;
+            height: 250px;
+            background: linear-gradient(to top, #1a4a2a, #2a7a4a);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 2;
+        }
+        .snow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .snowflake {
+            position: absolute;
+            color: white;
+            user-select: none;
+            will-change: transform, opacity;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(var(--sway, 0)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="countdown"></div>
+    <div class="forest" id="forest"></div>
+    <div class="snow" id="snow"></div>
+
+    <script>
+        // Countdown logic
+        function updateCountdown() {
+            const now = new Date();
+            const christmas = new Date(now.getFullYear(), 11, 25);
+            if (now > christmas) {
+                christmas.setFullYear(christmas.getFullYear() + 1);
+            }
+            const diff = christmas - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById('countdown').innerHTML =
+                `${days} days ${hours} hours ${minutes} minutes ${seconds}s`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Forest and snow logic
+        const forest = document.getElementById('forest');
+        const snowContainer = document.getElementById('snow');
+
+        // Create trees
+        for (let i = 0; i < 20; i++) {
+            const tree = document.createElement('div');
+            tree.className = 'tree';
+            tree.style.left = `${Math.random() * 100}%`;
+            tree.style.height = `${30 + Math.random() * 40}vh`;
+			tree.style.width = `${10 + Math.random() * 15}vh`;
+            tree.style.opacity = `${0.7 + Math.random() * 0.3}`;
+            forest.appendChild(tree);
+        }
+
+        // Snowflakes
+        const releaseAreas = [92, 45, 43, 53, 11, 44, 7, 35, 79, 46, 70, 31, 98, 22, 28, 68, 55, 25, 15, 89, 49, 62, 18, 93, 5];
+
+        function createSnowflake() {
+            const now = new Date("2025-12-23 00:00:00Z");
+            const christmas = new Date(now.getFullYear(), 11, 25);
+            const diff = christmas - now;
+            const daysUntilChristmas = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const nov1 = new Date(now.getFullYear(), 10, 1);
+            const daysSinceNov1 = Math.floor((now - nov1) / (1000 * 60 * 60 * 24));
+            const probability = Math.min(1, Math.max(0, daysSinceNov1 / 54));
+            if (Math.random() > probability) return;
+
+            const snowflake = document.createElement('div');
+            snowflake.className = 'snowflake';
+            snowflake.innerHTML = '❄';
+
+            const releaseX = Math.random() * 100;
+            snowflake.style.left = `${releaseX}%`;
+            snowflake.style.top = `${-20}px`;
+
+            const size = 8 + Math.random() * 30;
+            snowflake.style.fontSize = `${size}px`;
+            snowflake.style.opacity = `${0.5 + Math.random() * 0.5}`;
+
+            const sway = (Math.random() - 0.5) * 200;
+            snowflake.style.setProperty('--sway', `${sway}px`);
+
+            // Random fall duration (5-20s)
+            const duration = 5 + Math.random() * 15;
+            // Random point in the fall where fade-out starts (50-90% of the way)
+            const fadeStart = 0.8 + Math.random() * 0.1;
+
+            // Use a single animation that handles both falling and fading
+            snowflake.style.animation = `fall ${duration}s linear forwards`;
+
+            snowContainer.appendChild(snowflake);
+
+            setTimeout(() => {
+                snowflake.remove();
+            }, duration * 1000);
+        }
+
+        // Create a snowflake every 300ms
+        setInterval(createSnowflake, 20);
+    </script>
+</body>
+</html>
