@@ -15,20 +15,22 @@
             text-align: center;
             height: 100vh;
         }
-        #countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: clamp(2rem, 8vw, 4rem);
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
-                         0 0 25px rgba(255, 0, 100, 0.3),
-                         0 0 35px rgba(255, 215, 0, 0.2);
-            font-weight: bold;
-            letter-spacing: 3px;
-            z-index: 10;
-            animation: pulse 2s infinite alternate;
-        }
+		#countdown {
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    font-size: clamp(2rem, 6vw, 4rem); /* Adjusted to fit within 80% width */
+		    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
+		                 0 0 25px rgba(255, 0, 100, 0.3),
+		                 0 0 35px rgba(255, 215, 0, 0.2);
+		    font-weight: bold;
+		    letter-spacing: 3px;
+		    z-index: 10;
+		    animation: pulse 2s infinite alternate;
+		    max-width: 80vw;
+		    text-align: center;
+		}
         @keyframes pulse {
             from {
                 text-shadow: 0 0 15px rgba(255, 255, 255, 0.9),
