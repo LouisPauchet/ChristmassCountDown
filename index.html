@@ -57,14 +57,12 @@
             width: 100px;
             height: 250px;
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            z-index: 2;
         }
         .snow {
             position: absolute;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 3;
         }
         .snowflake {
             position: absolute;
@@ -133,7 +131,7 @@
         const forest = document.getElementById('forest');
         const snowContainer = document.getElementById('snow');
 
-        // Create trees with variety
+        // Create trees with green gradient variety
         for (let i = 0; i < 20; i++) {
             const tree = document.createElement('div');
             tree.className = 'tree';
@@ -141,43 +139,51 @@
             tree.style.height = `${30 + Math.random() * 40}vh`;
             tree.style.width = `${10 + Math.random() * 15}vh`;
             tree.style.opacity = `${0.7 + Math.random() * 0.3}`;
-            tree.style.background = `linear-gradient(to top, #${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}, #${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')})`;
+            // Random green gradient
+            const green1 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
+            const green2 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
+            tree.style.background = `linear-gradient(to top, ${green1}, ${green2})`;
+            tree.style.zIndex = Math.floor(Math.random() * 10) + 2; // Random z-index for trees
             forest.appendChild(tree);
         }
 
         // Snowflakes
         function createSnowflake() {
-            const now = new Date("2025-12-23 00:00:00Z");
-            const christmas = new Date('December 25, 2025 00:00:00');
-            const diff = christmas - now;
-            const daysUntilChristmas = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const nov1 = new Date(now.getFullYear(), 10, 1);
-            const daysSinceNov1 = Math.floor((now - nov1) / (1000 * 60 * 60 * 24));
-            const probability = Math.min(1, Math.max(0, daysSinceNov1 / 54));
-            if (Math.random() > probability) return;
+			for (let i = 0; i < 50*Math.random(); i++){
+				//const now = new Date("2025-12-23 00:00:00Z");
+				const now = new Date()
+				const christmas = new Date('December 25, 2025 00:00:00');
+				const diff = christmas - now;
+				const daysUntilChristmas = Math.floor(diff / (1000 * 60 * 60 * 24));
+				const nov1 = new Date(now.getFullYear(), 10, 1);
+				const daysSinceNov1 = Math.floor((now - nov1) / (1000 * 60 * 60 * 24));
+				const probability = Math.min(1, Math.max(0, daysSinceNov1 / 54));
+				if (Math.random() > probability) return;
 
-            const snowflake = document.createElement('div');
-            snowflake.className = 'snowflake';
-            snowflake.innerHTML = '❄';
-            const releaseX = Math.random() * 100;
-            snowflake.style.left = `${releaseX}%`;
-            snowflake.style.top = `${-20}px`;
-            const size = 8 + Math.random() * 30;
-            snowflake.style.fontSize = `${size}px`;
-            snowflake.style.opacity = `${0.5 + Math.random() * 0.5}`;
-            const sway = (Math.random() - 0.5) * 200;
-            snowflake.style.setProperty('--sway', `${sway}px`);
-            const duration = 5 + Math.random() * 15;
-            snowflake.style.animation = `fall ${duration}s linear forwards`;
-            snowContainer.appendChild(snowflake);
+				const snowflake = document.createElement('div');
+				snowflake.className = 'snowflake';
+				snowflake.innerHTML = '❄';
+				const releaseX = Math.random() * 100;
+				snowflake.style.left = `${releaseX}%`;
+				snowflake.style.top = `${-20}px`;
+				const size = 8 + Math.random() * 30;
+				snowflake.style.fontSize = `${size}px`;
+				snowflake.style.opacity = `${0.5 + Math.random() * 0.5}`;
+				const sway = (Math.random() - 0.5) * 200;
+				snowflake.style.setProperty('--sway', `${sway}px`);
+				const duration = 5 + Math.random() * 15;
+				snowflake.style.animation = `fall ${duration}s linear forwards`;
+				snowflake.style.zIndex = Math.floor(Math.random() * 10) + 1; // Random z-index for snowflakes
+				snowContainer.appendChild(snowflake);
 
-            setTimeout(() => {
-                snowflake.remove();
-            }, duration * 1000);
-        }
+				setTimeout(() => {
+					snowflake.remove();
+				}, duration * 1000);
+			}
+		}
 
         // Create a snowflake every 200ms for better performance
-        setInterval(createSnowflake, 50);
+        setInterval(createSnowflake, 200);
     </script>
 </body>
 </html>
