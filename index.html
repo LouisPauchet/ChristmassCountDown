@@ -156,9 +156,10 @@
                 tree.style.height = `${30 + Math.random() * 40}vh`;
                 tree.style.width = `${10 + Math.random() * 15}vh`;
                 tree.style.opacity = `${0.7 + Math.random() * 0.3}`;
-                const green1 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
-                const green2 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
-                tree.style.background = `linear-gradient(to top, ${green1}, ${green2})`;
+                //const green1 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
+                //const green2 = `hsl(${100 + Math.random() * 60}, ${50 + Math.random() * 40}%, ${20 + Math.random() * 20}%)`;
+                //tree.style.background = `linear-gradient(to top, ${green1}, ${green2})`;
+				tree.style.background = `linear-gradient(to top, #${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')}, #${Math.floor(Math.random()*16777215).toString(16).padStart(6, '0')})`;
                 tree.style.zIndex = Math.floor(Math.random() * 10) + 2;
                 forest.appendChild(tree);
             }
